@@ -8,6 +8,24 @@
   <title>Document</title>
 </head>
 <body>
-   <h1>ㅗ</h1>
+  <h1>URL Shortly</h1>
+  <table>
+  <thead>
+    <tr>
+      <tr>
+        <td>Long URL</td>
+        <td>Short URL</td>
+      </tr>
+    </tr>
+  </thead>
+  <tbody>
+    <% data.forEach( item => { %>
+      <tr>
+        <td><%= item.longUrl %></td>
+        <td><%= item.id %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+  </table>
 </body>
 </html>

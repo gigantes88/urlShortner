@@ -1,10 +1,17 @@
 const express = require('express'); // 1. express 사용요청 
 const app = express();  // 2. express 사용 초기화
+
 const morgan = require('morgan'); // 3. morgan 사용요청
 const basicAuth = require('express-basic-auth'); // 4. express-basic-auth 사용요청
 const randomstring = require("randomstring"); // 5. 랜덤문자생성 사용요청
 const bodyParser = require('body-parser'); // 6. body-parser 사용요청
 
+const authMiddleware = basicAuth({ // basicAuth 설정 (로그인창)
+  users: { 'admin': 'admin' },
+  challenge: true,
+  realm: 'Imb4T3st4pp'
+});
+const bodyParserMiddleware = bodyParser.urlencoded({ extended: false }); // body-parser 설정
 const data = [
   {longUrl: 'http://google.com', id: randomstring.generate(6)}  // id에 randomstring을 생성
 ];
@@ -12,15 +19,9 @@ const data = [
 app.set('view engine', 'ejs');  // ejs 설정
 app.use('/static', express.static('public')); // static 설정
 app.use(morgan('tiny'));  // morgan 설정
-app.use(basicAuth({ // basicAuth 설정
-  users: { 'admin': 'admin' },
-  challenge: true,
-  realm: 'Imb4T3st4pp'
-}));
-app.use(bodyParser.urlencoded({ extended: false })); // body-parser 설정
 
 // 7. index.ejs를 렌더링 해준다.
-app.get('/', (req, res) => {
+app.get('/', authMiddleware, (req, res) => {
   res.render('index', {data});
 });
 
@@ -36,7 +37,7 @@ app.get('/:id', (req, res) => {
   }
 });
 
-app.post('/', (req, res) => {
+app.post('/', authMiddleware, bodyParserMiddleware, (req, res) => {
   const longUrl = req.body.longUrl;
   let id;
   while(true) {

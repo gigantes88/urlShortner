@@ -1,6 +1,6 @@
 ## URL Shortner 생성 사이트
 
-[URL Shortner](https://urlshortner-ogplzqqfqv.now.sh/)
+[URL Shortner 바로가기](https://urlshortner-ogplzqqfqv.now.sh/)
 
-id: admin
-pw: admin
+ID: admin  
+PW: admin
